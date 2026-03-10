@@ -8,9 +8,9 @@ terraform {
 }
 
 provider "google" {
-  project = "test-project-489406"
-  region  = "us-central1"
-  zone    = "us-central1-a"
+  project = var.project_id
+  region  = var.region
+  zone    = var.zone
 }
 
 resource "google_compute_instance" "test_vm" {
