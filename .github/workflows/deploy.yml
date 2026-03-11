@@ -1,9 +1,8 @@
-///name: Terraform Apply
+name: Terraform Apply
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 permissions:
   id-token: write
@@ -17,7 +16,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup gcloud auth
+      - name: Google Auth (WIF)
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDP }}
@@ -35,4 +34,8 @@ jobs:
 
       - name: Terraform Apply
         working-directory: infra
+        env:
+          TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
+          TF_VAR_region: ${{ vars.GCP_REGION }}
+          TF_VAR_zone: ${{ vars.GCP_ZONE }}
         run: terraform apply -auto-approve
